@@ -1,10 +1,12 @@
 const getBtn = document.getElementById("get-btn");
 const startBtn = document.getElementById("start-btn");
+const clearBtn = document.getElementById("clear-btn");
 const countElement = document.getElementById("total_element");
 const startElement = document.getElementById("start");
 const endElement = document.getElementById("end");
 const arrayContainer = document.getElementById("array-container");
 const animationDuration = 1000;
+const timeOutArray = [];
 
 const randomNumber = (start, end) => {
   return Math.floor(Math.random() * (end - start)) + start;
@@ -46,20 +48,7 @@ const swapWithAnimate = async (a, b) => {
   );
 };
 
-getBtn.addEventListener("click", () => {
-  const count = countElement.value;
-  const start = startElement.value;
-  const end = endElement.value;
-  const array = arrayOfRandom(+count, +start, +end);
-  arrayContainer.textContent = "";
-
-  array.forEach((el) => {
-    const html = `<div class="element">${el}</div>`;
-    arrayContainer.insertAdjacentHTML("beforeend", html);
-  });
-});
-
-const move = async (e) => {
+const bubbleSort = async (e) => {
   const array = document.querySelectorAll(".element");
   const numbers = [];
   array.forEach((el) => numbers.push(parseInt(el.textContent)));
@@ -68,7 +57,6 @@ const move = async (e) => {
     for (let j = 0; j < array.length - i - 1; j++) {
       const node1 = array[j];
       const node2 = array[j + 1];
-
       if (numbers[j] > numbers[j + 1]) {
         [numbers[j], numbers[j + 1]] = [numbers[j + 1], numbers[j]];
         const clearTimeOutObj = setTimeout(() => {
@@ -80,12 +68,37 @@ const move = async (e) => {
             ];
             clearTimeout(numberTimeOut);
           }, animationDuration);
+          timeOutArray.push(numberTimeOut);
           clearTimeout(clearTimeOutObj);
         }, timeOut);
+        timeOutArray.push(clearTimeOutObj);
         timeOut += animationDuration + 500;
       }
     }
   }
 };
 
-startBtn.addEventListener("click", move);
+getBtn.addEventListener("click", () => {
+  const count = countElement.value;
+  const start = startElement.value;
+  const end = endElement.value;
+  if (count > 20 || count < 1) {
+    alert("please enter number in range 1 to 20");
+    return;
+  }
+  const array = arrayOfRandom(+count, +start, +end);
+  arrayContainer.textContent = "";
+
+  array.forEach((el) => {
+    const html = `<div class="element">${el}</div>`;
+    arrayContainer.insertAdjacentHTML("beforeend", html);
+  });
+});
+
+clearBtn.addEventListener("click", () => {
+  timeOutArray.forEach((timeOut) => {
+    clearTimeout(timeOut);
+  });
+});
+
+startBtn.addEventListener("click", bubbleSort);
