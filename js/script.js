@@ -49,6 +49,7 @@ const swapWithAnimate = async (a, b) => {
 };
 
 const bubbleSort = async (e) => {
+  clearAllTimeOuts();
   const array = document.querySelectorAll(".element");
   const numbers = [];
   array.forEach((el) => numbers.push(parseInt(el.textContent)));
@@ -78,6 +79,12 @@ const bubbleSort = async (e) => {
   }
 };
 
+const clearAllTimeOuts = () => {
+  timeOutArray.forEach((timeOut) => {
+    clearTimeout(timeOut);
+  });
+};
+
 getBtn.addEventListener("click", () => {
   const count = countElement.value;
   const start = startElement.value;
@@ -95,10 +102,6 @@ getBtn.addEventListener("click", () => {
   });
 });
 
-clearBtn.addEventListener("click", () => {
-  timeOutArray.forEach((timeOut) => {
-    clearTimeout(timeOut);
-  });
-});
+clearBtn.addEventListener("click", clearAllTimeOuts);
 
 startBtn.addEventListener("click", bubbleSort);
