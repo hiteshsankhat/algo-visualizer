@@ -1,53 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Algo visualizer</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <script defer src="js/script.js"></script>
-  </head>
-  <body>
-    <main class="container">
-      <div class="title-container">
-        <h2 class="title">Bubble Sort Visualizer</h2>
-      </div>
-      <div class="input-container">
-        <div class="total-element">
-          <label for="total_element"> Number of array element</label>
-          <input
-            type="text"
-            name="total_element"
-            id="total_element"
-            value="10"
-          />
-        </div>
-        <div class="start">
-          <label for="start"> Number From</label>
-          <input type="text" name="start" id="start" value="10" />
-        </div>
-        <div class="end">
-          <label for="end"> Number to</label>
-          <input type="text" name="end" id="end" value="100" />
-        </div>
-      </div>
-      <div class="btn-container">
-        <button id="get-btn" class="btn get-btn">Get Numbers</button>
-        <button id="start-btn" class="btn start-btn">Start</button>
-        <button id="clear-btn" class="btn clear-btn">End</button>
-      </div>
-    </main>
-    <div class="array-parent">
-      <div id="array-container" class="array-container">
-        <div class="element" id="a1" data-index="${index}" data-value="55">
-          60
-        </div>
-        <div class="element" id="a3" data-index="${index}" data-value="55">
-          65
-        </div>
-        <div class="element" id="a2" data-index="${index}" data-value="55">
-          55
-        </div>
-      </div>
-    </div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Algo visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/script.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>Algo visualizer</h1>
+  </header>
+  <div class="user-input">
+    <label for="numberOfElements">Enter the number of elements: </label>
+    <input id="number_of_elements" name="numberOfElements" type="text" value="10">
+    <button id="start" type="button">start</button>
+  </div>
+  <main>
+    <canvas id="canvas"></canvas>
+  </main>
+</body>
+
 </html>
