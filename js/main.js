@@ -6,6 +6,7 @@ const regenerateBtn = document.getElementById("regenerate-array");
 const bubbleSortBtn = document.getElementById("bubble-sort");
 const quickSortBtn = document.getElementById("quick-sort");
 const selectionSortBtn = document.getElementById("selection-sort");
+const insertionSortBtn = document.getElementById("insertion-sort");
 const numberOfElementSlider = document.getElementById("number-of-elements");
 const animationSpeedSlider = document.getElementById("animation-speed");
 let SPEED = animationSpeedSlider.max / 2;
@@ -30,6 +31,8 @@ function enableDisableElement(bool) {
   numberOfElementSlider.disabled = bool;
   isSortRunning = bool;
   bubbleSortBtn.disabled = bool;
+  selectionSortBtn.disabled = bool;
+  insertionSortBtn.disabled = bool;
   quickSortBtn.disabled = bool;
 }
 
@@ -147,7 +150,27 @@ async function selectionSort(arr) {
   enableDisableElement(false);
   drawArray(arr, colorArray);
 }
-
+async function insertionSort(arr) {
+  const length = arr.length;
+  let key;
+  for (let i = 1; i < length; i++) {
+    key = arr[i];
+    let j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      if (!isSortRunning) {
+        enableDisableElement(false);
+        drawArray(arr, colorArray);
+        return;
+      }
+      await compare(arr, j, i);
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+    arr[j + 1] = key;
+  }
+  enableDisableElement(false);
+  drawArray(arr, colorArray);
+}
 setUpCanvas();
 generateArray(10);
 
@@ -175,4 +198,8 @@ quickSortBtn.addEventListener("click", () => {
 selectionSortBtn.addEventListener("click", () => {
   enableDisableElement(true);
   selectionSort(numberArray);
+});
+insertionSortBtn.addEventListener("click", () => {
+  enableDisableElement(true);
+  insertionSort(numberArray);
 });
