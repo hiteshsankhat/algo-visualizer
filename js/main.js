@@ -4,7 +4,7 @@ let isSortRunning = false;
 const canvas = document.getElementById("canvas");
 const regenerateBtn = document.getElementById("regenerate-array");
 const bubbleSortBtn = document.getElementById("bubble-sort");
-const mergeSortBtn = document.getElementById("merge-sort");
+const quickSortBtn = document.getElementById("quick-sort");
 const numberOfElementSlider = document.getElementById("number-of-elements");
 const animationSpeedSlider = document.getElementById("animation-speed");
 let SPEED = animationSpeedSlider.max / 2;
@@ -83,36 +83,42 @@ async function bubbleSort(arr) {
   enableDisableElement(false);
   drawArray(arr, colorArray);
 }
-async function mergeSort(arr) {
-  let sorted = false;
-  let i = 0;
-  async function sort() {
-    if (i < arr.length - 1 && !sorted) {
-      if ((await compare(arr, i, i + 1)) === -1) {
-        sorted = false;
-        await swap(arr, i, i + 1);
-      }
-      i++;
-    } else {
-      if (sorted) {
-        isSortRunning = false;
+async function quickSort(arr) {
+  async function partition(arr, low, high) {
+    let i = low - 1;
+    for (let j = low; j <= high - 1; j++) {
+      if (!isSortRunning) {
+        drawArray(arr, colorArray);
         return;
       }
-      sorted = true;
-      i = 0;
+      if ((await compare(arr, j, high)) === 1) {
+        i++;
+        await swap(arr, i, j);
+      }
     }
-    if (isSortRunning) {
-      requestAnimationFrame(sort);
+    await swap(arr, i + 1, high);
+    return i + 1;
+  }
+  async function sort(arr, low, high) {
+    if (!isSortRunning) {
+      drawArray(arr, colorArray);
+      return;
+    }
+    if (low < high) {
+      let pi = await partition(arr, low, high);
+      await sort(arr, low, pi - 1);
+      await sort(arr, pi + 1, high);
     }
   }
-  requestAnimationFrame(sort);
+  await sort(arr, 0, arr.length - 1);
+  enableDisableElement(false);
   drawArray(arr, colorArray);
 }
 function enableDisableElement(bool) {
   numberOfElementSlider.disabled = bool;
   isSortRunning = bool;
   bubbleSortBtn.disabled = bool;
-  mergeSortBtn.disabled = bool;
+  quickSortBtn.disabled = bool;
 }
 
 setUpCanvas();
@@ -135,7 +141,7 @@ bubbleSortBtn.addEventListener("click", () => {
   bubbleSort(numberArray);
 });
 
-mergeSortBtn.addEventListener("click", () => {
+quickSortBtn.addEventListener("click", () => {
   enableDisableElement(true);
-  mergeSort(numberArray);
+  quickSort(numberArray);
 });
