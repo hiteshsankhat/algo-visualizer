@@ -5,6 +5,7 @@ const canvas = document.getElementById("canvas");
 const regenerateBtn = document.getElementById("regenerate-array");
 const bubbleSortBtn = document.getElementById("bubble-sort");
 const quickSortBtn = document.getElementById("quick-sort");
+const selectionSortBtn = document.getElementById("selection-sort");
 const numberOfElementSlider = document.getElementById("number-of-elements");
 const animationSpeedSlider = document.getElementById("animation-speed");
 let SPEED = animationSpeedSlider.max / 2;
@@ -25,6 +26,13 @@ function setUpCanvas() {
 function sleep() {
   return new Promise((resolve) => setTimeout(resolve, SPEED));
 }
+function enableDisableElement(bool) {
+  numberOfElementSlider.disabled = bool;
+  isSortRunning = bool;
+  bubbleSortBtn.disabled = bool;
+  quickSortBtn.disabled = bool;
+}
+
 async function generateArray(numberOfElement) {
   numberArray.length = 0;
   colorArray.length = 0;
@@ -70,13 +78,13 @@ async function bubbleSort(arr) {
   const length = arr.length;
   for (let i = 0; i < length - 1; i++) {
     for (let j = 0; j < length - i - 1; j++) {
-      if ((await compare(arr, j, j + 1)) === -1) {
-        await swap(arr, j, j + 1);
-      }
       if (!isSortRunning) {
         enableDisableElement(false);
         drawArray(arr, colorArray);
         return;
+      }
+      if ((await compare(arr, j, j + 1)) === -1) {
+        await swap(arr, j, j + 1);
       }
     }
   }
@@ -114,11 +122,30 @@ async function quickSort(arr) {
   enableDisableElement(false);
   drawArray(arr, colorArray);
 }
-function enableDisableElement(bool) {
-  numberOfElementSlider.disabled = bool;
-  isSortRunning = bool;
-  bubbleSortBtn.disabled = bool;
-  quickSortBtn.disabled = bool;
+async function selectionSort(arr) {
+  const length = arr.length;
+  let min_idx;
+  for (let i = 0; i < length - 1; i++) {
+    min_idx = i;
+    for (let j = i + 1; j < length; j++) {
+      if (!isSortRunning) {
+        enableDisableElement(false);
+        drawArray(arr, colorArray);
+        return;
+      }
+      if ((await compare(arr, min_idx, j)) === -1) {
+        min_idx = j;
+      }
+    }
+    if (!isSortRunning) {
+      enableDisableElement(false);
+      drawArray(arr, colorArray);
+      return;
+    }
+    await swap(arr, min_idx, i);
+  }
+  enableDisableElement(false);
+  drawArray(arr, colorArray);
 }
 
 setUpCanvas();
@@ -144,4 +171,8 @@ bubbleSortBtn.addEventListener("click", () => {
 quickSortBtn.addEventListener("click", () => {
   enableDisableElement(true);
   quickSort(numberArray);
+});
+selectionSortBtn.addEventListener("click", () => {
+  enableDisableElement(true);
+  selectionSort(numberArray);
 });
