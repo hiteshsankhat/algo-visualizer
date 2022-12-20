@@ -35,13 +35,7 @@ function getUserInputData() {
   const startButton = document.getElementById("start");
   startButton.addEventListener("click", start);
 }
-function generateArray(numberOfElement) {
-  const numberArray = new Array(numberOfElement);
-  for (let i = 0; i < numberOfElement; i++) {
-    numberArray[i] = Math.round(Math.random() * MAX_VALUE);
-  }
-  return numberArray;
-}
+
 function setUpCanvas() {
   const canvas = document.getElementById("canvas");
   const dpr = window.devicePixelRatio;
