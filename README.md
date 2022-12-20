@@ -12,3 +12,5 @@
 ## Quick Sort
 
 > Quick sort is a divide and conquer algorithm that uses recursion to sort a list. It works by selecting a "pivot" element from the list and partitioning the other elements into two lists, according to whether they are less than or greater than the pivot. It then recursively sorts the sub-lists.
+
+## [DEMO Link](https://hiteshsankhat.github.io/algo-visualizer/)
