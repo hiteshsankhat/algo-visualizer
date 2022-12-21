@@ -162,11 +162,22 @@ async function insertionSort(arr) {
         drawArray(arr, colorArray);
         return;
       }
-      await compare(arr, j, i);
+      [colorArray[j + 1], colorArray[j]] = [COLORS.COMPARE, COLORS.COMPARE];
+      drawArray(arr, colorArray);
+      await sleep();
       arr[j + 1] = arr[j];
+      [colorArray[j + 1], colorArray[j]] = [COLORS.DEFAULT, COLORS.DEFAULT];
       j = j - 1;
+      drawArray(arr, colorArray);
+      await sleep();
     }
+    [colorArray[j + 1], colorArray[i]] = [COLORS.SWAP, COLORS.SWAP];
+    drawArray(arr, colorArray);
+    await sleep();
     arr[j + 1] = key;
+    [colorArray[j + 1], colorArray[i]] = [COLORS.DEFAULT, COLORS.DEFAULT];
+    drawArray(arr, colorArray);
+    await sleep();
   }
   enableDisableElement(false);
   drawArray(arr, colorArray);
